@@ -9,8 +9,17 @@ jobs:
  sync-and-deploy:
     runs-on: ubuntu-latest
     steps:
+     # 检查 commit 中是否包含 sync 关键字
+    - name: Check commit message
+      run: |
+        if [[ "${{ github.event.head_commit.message }}" == *"#sync#"* ]]; then
+          echo "SYNC=true" >> $GITHUB_ENV
+        else
+          echo "SYNC=false" >> $GITHUB_ENV
+        fi
       # 镜像Github组织仓库到Gitee
     - name: Mirror the Github organization repos to Gitee.
+      if: env.SYNC == 'true'
       uses: Yikun/hub-mirror-action@master
       with:
         src: 'github/xhan4'
