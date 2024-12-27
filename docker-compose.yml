@@ -1,7 +1,4 @@
 # 根目录/docker-compose.yml
-
-version: '3'
-
 services:
   blog-admin:
     container_name: blog-admin${DATE_TAG} #设置容器名称
