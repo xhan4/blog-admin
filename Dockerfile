@@ -8,13 +8,12 @@ RUN npm config set registry https://registry.npmmirror.com/
 RUN npm install -g pnpm@latest && pnpm config set registry https://registry.npmmirror.com/
 # 将前端源码复制到 /app 目录中
 WORKDIR /blog-admin
-# 复制 package.json 和 pnpm-lock.yaml
-COPY package.json pnpm-lock.yaml ./
+# monorepo项目复制整个项目
+COPY . .
 
 # 使用 pnpm 安装依赖
 RUN pnpm install --frozen-lockfile
 
-COPY . .
 
 # 编译项目
 RUN pnpm run build
