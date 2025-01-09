@@ -3,6 +3,7 @@
 .husky
 .vscode
 node_modules
+dist
 .prettierrc
 .prettierignore
 README.md

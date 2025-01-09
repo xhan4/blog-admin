@@ -8,11 +8,16 @@ RUN npm config set registry https://registry.npmmirror.com/
 RUN npm install -g pnpm@latest && pnpm config set registry https://registry.npmmirror.com/
 # 将前端源码复制到 /blog-admin 目录中
 WORKDIR /blog-admin
+
+COPY packages /blog-admin/packages
 # 复制整个项目，除了 node_modules 和 dist 等目录
+COPY  package.json pnpm-lock.yaml pnpm-workspace.yaml /blog-admin/
+
+# 使用 pnpm 安装依赖
+RUN pnpm install --frozen-lockfile
+
 COPY . .
 
-# 使用 pnpm 安装依赖设置更低的并发度来减少内存压力：--concurrency=2 
-RUN pnpm install --frozen-lockfile --child-concurrency=2
 # 编译项目
 RUN pnpm run build
 

@@ -70,7 +70,7 @@ jobs:
           # 删除容器
           docker-compose down
           # 构建并启动 Docker 容器，并输出更多调试信息
-          docker-compose up -d
+          docker-compose up -d --build  # 强制构建并启动容器
           # 对空间进行自动清理
           docker system prune -a -f
           # 检查 Docker 容器状态
