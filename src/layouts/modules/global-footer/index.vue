@@ -6,10 +6,10 @@ defineOptions({
 
 <template>
   <DarkModeContainer class="h-full flex-center">
-    <a href="https://github.com/soybeanjs/soybean-admin/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">
-      Copyright MIT © 2021 Soybean
+    <a href="https://laicuinan.cn/" target="_blank" rel="noopener noreferrer">
+      system ©2021 Created by fuming
     </a>
-  </DarkModeContainer>
+    </DarkModeContainer>
 </template>
 
 <style scoped></style>
