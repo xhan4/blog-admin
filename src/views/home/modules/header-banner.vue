@@ -10,7 +10,6 @@ defineOptions({
 
 const appStore = useAppStore();
 const authStore = useAuthStore();
-
 const gap = computed(() => (appStore.isMobile ? 0 : 16));
 
 interface StatisticData {
@@ -48,7 +47,7 @@ const statisticData = computed<StatisticData[]>(() => [
           </div>
           <div class="pl-12px">
             <h3 class="text-18px font-semibold">
-              {{ $t('page.home.greeting', { username: authStore.userInfo.username }) }}
+              {{ $t('page.home.greeting', { nickname: authStore.userInfo.nickname }) }}
             </h3>
             <p class="text-#999 leading-30px">{{ $t('page.home.weatherDesc') }}</p>
           </div>
