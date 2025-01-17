@@ -40,6 +40,17 @@ export const generatedRoutes: GeneratedRoute[] = [
     }
   },
   {
+    name: 'blog-manage',
+    path: '/blog-manage',
+    component: 'layout.base$view.blog-manage',
+    meta: {
+      title: 'blog-manage',
+      i18nKey: 'route.blog-manage',
+      icon: 'ic:baseline-assignment',
+      order: 3
+    }
+  },
+  {
     name: 'home',
     path: '/home',
     component: 'layout.base$view.home',
@@ -73,6 +84,17 @@ export const generatedRoutes: GeneratedRoute[] = [
       i18nKey: 'route.login',
       constant: true,
       hideInMenu: true
+    }
+  },
+  {
+    name: 'mp-manage',
+    path: '/mp-manage',
+    component: 'layout.base$view.mp-manage',
+    meta: {
+      title: 'mp-manage',
+      i18nKey: 'route.mp-manage',
+      icon: 'mingcute:wechat-miniprogram-line',
+      order: 2
     }
   }
 ];
