@@ -12,7 +12,8 @@ export function fetchLogin(username: string, password: string) {
     method: 'post',
     data: {
       username,
-      password
+      password,
+      app_id:'WEB_MANAGE'
     }
   });
 }
@@ -44,10 +45,11 @@ export function fetchGetUserInfo() {
  */
 export function fetchRefreshToken(refreshToken: string) {
   return request<Api.Auth.LoginToken>({
-    url: '/auth/refreshToken',
+    url: '/user/refreshToken',
     method: 'post',
     data: {
-      refreshToken
+      refresh_token:refreshToken,
+      app_id:'WEB_MANAGE'
     }
   });
 }

@@ -543,12 +543,10 @@ declare namespace App {
 
     /** The backend service config */
     interface ServiceConfig extends ServiceConfigItem {
-      /** Other backend service config */
-      other: OtherServiceConfigItem[];
+
     }
 
     interface SimpleServiceConfig extends Pick<ServiceConfigItem, 'baseURL'> {
-      other: Record<OtherBaseURLKey, string>;
     }
 
     /** The backend service response data */
