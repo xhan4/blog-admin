@@ -13,7 +13,6 @@ export function fetchLogin(username: string, password: string) {
     data: {
       username,
       password,
-      app_id:'WEB_MANAGE'
     }
   });
 }
@@ -49,7 +48,6 @@ export function fetchRefreshToken(refreshToken: string) {
     method: 'post',
     data: {
       refresh_token:refreshToken,
-      app_id:'WEB_MANAGE'
     }
   });
 }

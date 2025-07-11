@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed, reactive } from 'vue';
 import { $t } from '@/locales';
-import { loginModuleRecord } from '@/constants/app';
 import { useRouterPush } from '@/hooks/common/router';
 import { useFormRules, useNaiveForm } from '@/hooks/common/form';
 import { useAuthStore } from '@/store/modules/auth';
@@ -20,7 +19,7 @@ interface FormModel {
 }
 
 const model: FormModel = reactive({
-  username: 'fuming',
+  username: 'admin',
   password: '123456'
 });
 

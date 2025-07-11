@@ -70,11 +70,12 @@ export const useAuthStore = defineStore(SetupStoreId.Auth, () => {
 
       if (pass) {
         await redirectFromLogin(redirect);
-
+        // 添加延迟等待路由初始化完成
+        await new Promise(resolve => setTimeout(resolve,1));
         if (routeStore.isInitAuthRoute) {
           window.$notification?.success({
             title: $t('page.login.common.loginSuccess'),
-            content: $t('page.login.common.welcomeBack', { username: userInfo.nickname }),
+            content: $t('page.login.common.welcomeBack', { nickname: userInfo.nickname }),
             duration: 4500
           });
         }
@@ -118,8 +119,7 @@ export const useAuthStore = defineStore(SetupStoreId.Auth, () => {
 
   async function initUserInfo() {
     const hasToken = getToken();
-
-    if (hasToken) {
+    if (hasToken && !userInfo.userId) {
       const pass = await getUserInfo();
 
       if (!pass) {

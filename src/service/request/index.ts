@@ -1,8 +1,7 @@
 import type { AxiosResponse } from 'axios';
-import { BACKEND_ERROR_CODE, createFlatRequest, createRequest } from '@sa/axios';
+import { BACKEND_ERROR_CODE, createFlatRequest } from '@sa/axios';
 import { useAuthStore } from '@/store/modules/auth';
 import { $t } from '@/locales';
-import { localStg } from '@/utils/storage';
 import { getServiceBaseURL } from '@/utils/service';
 import { getAuthorization, handleExpiredRequest, showErrorMsg } from './shared';
 import type { RequestInstanceState } from './type';
@@ -14,7 +13,7 @@ export const request = createFlatRequest<App.Service.Response, RequestInstanceSt
   {
     baseURL,
     headers: {
-      'x-app-id': 'WEB_MANAGER'
+      'x-app-id': 'WEB_ADMIN'
     }
   },
   {
@@ -30,7 +29,6 @@ export const request = createFlatRequest<App.Service.Response, RequestInstanceSt
       return String(response.data.code) === import.meta.env.VITE_SERVICE_SUCCESS_CODE;
     },
     async onBackendFail(response, instance) {
-      console.log('1111111111111111')
       const authStore = useAuthStore();
       const responseCode = String(response.data.code);
 
@@ -96,7 +94,6 @@ export const request = createFlatRequest<App.Service.Response, RequestInstanceSt
       return response.data.data;
     },
     onError(error) {
-      console.log('2222222222')
       // when the request is fail, you can show error message
 
       let message = error.message;
