@@ -17,6 +17,11 @@ jobs:
         else
           echo "SYNC=false" >> $GITHUB_ENV
         fi
+        if [[ "${{ github.event.head_commit.message }}" == *"#release#"* ]]; then
+          echo "RELEASE=true" >> $GITHUB_ENV
+        else
+          echo "RELEASE=false" >> $GITHUB_ENV
+        fi
       # 镜像Github组织仓库到Gitee
     - name: Mirror the Github organization repos to Gitee.
       if: env.SYNC == 'true'
@@ -30,21 +35,25 @@ jobs:
         force_update: true
     #目录权限
     - name: Reset permissions for checkout
+      if: env.RELEASE == 'true'
       run: |
         sudo chown -R runner:runner /home/runner/work/blog-admin/blog-admin
         sudo chmod -R 755 /home/runner/work/blog-admin/blog-admin
     # 检出代码
     - name: Checkout code
+      if: env.RELEASE == 'true'
       uses: actions/checkout@v3
   
     # 设置 SSH 密钥以便进行远程连接
     - name: Set up SSH
+      if: env.RELEASE == 'true'
       uses: webfactory/ssh-agent@v0.5.3
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
     # 添加远程主机的公钥到 known_hosts
     - name: Add SSH host key to known_hosts
+      if: env.RELEASE == 'true'
       run: |
         mkdir -p ~/.ssh
         ssh-keyscan -H 101.200.160.131 >> ~/.ssh/known_hosts || true
@@ -52,11 +61,13 @@ jobs:
 
     # 上传源代码到服务器，并排除 .git 目录
     - name: Upload source code to server (excluding .git)
+      if: env.RELEASE == 'true'
       run: |
         rsync -av --exclude='.git' --delete ./ root@101.200.160.131:/workspace/deploy/blog-admin/
         
     # 部署到服务器
     - name: Deploy Docker containers to server
+      if: env.RELEASE == 'true'
       run: |
         # 启用错误检查，确保命令失败时会中止并报告错误
         set -e
