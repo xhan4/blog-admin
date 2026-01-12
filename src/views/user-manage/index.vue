@@ -11,7 +11,7 @@ const gap = computed(() => (appStore.isMobile ? 0 : 16));
     <NGrid :x-gap="gap" :y-gap="16" responsive="screen" item-responsive>
         <NGi span="24 s:24 m:14">
         <NCard :bordered="false" class="card-wrapper">
-            博客管理【未完成，待开发】
+            用户管理
         </NCard>
       </NGi>
     </NGrid>

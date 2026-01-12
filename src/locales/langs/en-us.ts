@@ -161,7 +161,8 @@ const local: App.I18n.Schema = {
     'iframe-page': 'Iframe',
     home: 'Home',
     'blog-manage':'BlogManage',
-    'mp-manage':'MpManage'
+    'mp-manage':'MpManage',
+    'user-manage':'UserManage',
   },
   page: {
     login: {

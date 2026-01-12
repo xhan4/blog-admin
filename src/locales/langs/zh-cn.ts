@@ -161,7 +161,8 @@ const local: App.I18n.Schema = {
     'iframe-page': '外链页面',
     home: '首页',
     'blog-manage':"博客管理",
-    'mp-manage':"小程序管理"
+    'mp-manage':"小程序管理",
+    'user-manage':"用户管理"
   },
   page: {
     login: {
