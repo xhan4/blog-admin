@@ -65,6 +65,10 @@ declare namespace Api {
       roles: string[];
       buttons: string[];
     }
+
+    type RoleType = '0' | '1' | '2';
+    // 根据实际API数据，membership是字符串数字类型
+    type MembershipType = '0' | '1' | '2' | '3';
   }
 
   /**
@@ -82,6 +86,47 @@ declare namespace Api {
     interface UserRoute {
       routes: MenuRoute[];
       home: import('@elegant-router/types').LastLevelRouteKey;
+    }
+  }
+
+  namespace User {
+    interface UserInfo {
+      id: number;
+      appId?: string; // 可选字段
+      username: string;
+      password?: string; // 可选字段
+      avatar: string | null;
+      roles: string[];
+      nickname: string;
+      active: number | null; // 允许null
+      salt?: string; // 可选字段
+      points: number;
+      membership: string; // 根据实际API数据，使用字符串类型
+      create_time: string;
+      update_time: string;
+    }
+
+    interface UserListParams {
+      page?: number;
+      pageSize?: number;
+      username?: string;
+      nickname?: string;
+      active?: number;
+      membership?: string; // 更新为字符串类型
+    }
+
+    // 更新UserListResult以匹配实际API响应格式
+    interface UserListResult {
+      data: UserInfo[];  // 数据在data字段中
+      code: number;
+      msg: string;
+    }
+
+    // 用户详情响应格式
+    interface UserDetailResult {
+      data: UserInfo;     // 数据在data字段中
+      code: number;
+      msg: string;
     }
   }
 }
