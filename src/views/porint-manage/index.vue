@@ -54,7 +54,7 @@
         itemCount: total,
         showSizePicker: true,
         pageSizes: [10, 20, 50, 100]
-      }" :scroll-x="1200" :min-height="550" remote @update:page="handleChangePage"
+      }" :min-height="550" remote @update:page="handleChangePage"
         @update:page-size="handlePageSizeChange" />
     </NCard>
 
@@ -113,9 +113,11 @@ const dateRange = ref<[number, number] | null>(null);
 const transactionTypeOptions = [
   { label: '注册奖励', value: 'register_bonus' },
   { label: '视频扣除', value: 'video_deduction' },
+  { label: '失败返还', value: 'video_refund' },
   { label: '每日签到', value: 'daily_check' },
   { label: '分享奖励', value: 'share_bonus' },
-  { label: '管理员调整', value: 'admin_adjust' }
+  { label: '管理员增加', value: 'manual_add' },
+  { label: '管理员扣除', value: 'manual_deduct' }
 ];
 
 const handleChangePage = (page: number) => {
