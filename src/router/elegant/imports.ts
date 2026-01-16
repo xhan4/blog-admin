@@ -21,5 +21,6 @@ export const views: Record<LastLevelRouteKey, RouteComponent | (() => Promise<Ro
   "iframe-page": () => import("@/views/_builtin/iframe-page/[url].vue"),
   login: () => import("@/views/_builtin/login/index.vue"),
   home: () => import("@/views/home/index.vue"),
+  "porint-manage": () => import("@/views/porint-manage/index.vue"),
   "user-manage": () => import("@/views/user-manage/index.vue"),
 };

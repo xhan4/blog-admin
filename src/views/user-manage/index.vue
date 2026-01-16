@@ -1,8 +1,184 @@
+<template>
+  <div class="p-4">
+    <NCard title="用户管理" :bordered="false"  size="small">
+      <template #header-extra>
+        <div class="text-gray-500 text-sm">
+          共 {{ data.total }} 条
+        </div>
+      </template>
+
+      <!-- 搜索区域 -->
+         <NForm :model="searchParams" label-placement="left" :label-width="80">
+        <NGrid cols="1 s:3 m:4 l:6" responsive="screen" :x-gap="16" :y-gap="8">
+            <NFormItemGi label="账号">
+              <NInput v-model:value="searchParams.username" placeholder="请输入账号" clearable />
+            </NFormItemGi>
+            <NFormItemGi label="昵称">
+              <NInput v-model:value="searchParams.nickname" placeholder="请输入昵称" clearable />
+            </NFormItemGi>
+            <NFormItemGi label="状态">
+              <NSelect 
+                v-model:value="searchParams.active" 
+                :options="activeOptions" 
+                placeholder="请选择状态" 
+                clearable 
+              />
+            </NFormItemGi>
+            <NFormItemGi label="等级">
+              <NSelect 
+                v-model:value="searchParams.membership" 
+                :options="membershipOptions" 
+                placeholder="请选择等级" 
+                clearable 
+              />
+            </NFormItemGi>
+           <NFormItemGi>
+            <NSpace>
+              <NButton type="primary" size="small" @click="handleSearch">
+                <template #icon>
+                  <icon-ic-round-search class="text-icon" />
+                </template>
+                搜索
+              </NButton>
+              <NButton size="small" @click="handleReset">
+                <template #icon>
+                  <icon-ic-round-refresh class="text-icon" />
+                </template>
+                重置
+              </NButton>
+            </NSpace>
+          </NFormItemGi>
+        </NGrid>
+      </NForm>
+
+      <!-- 表格 -->
+      <NDataTable
+        :loading="loading"
+        :columns="columns"
+        :data="data.list"
+        :pagination="{
+          page: pagination.page,
+          pageSize: pagination.pageSize,
+          pageCount: pagination.pageCount,
+          itemCount: data.total,
+          showSizePicker: true,
+          pageSizes: [10, 20, 50, 100]
+        }"
+        remote
+        :min-height="550"
+        @update:page="handlePageChange"
+        @update:page-size="handlePageSizeChange"
+      />
+    </NCard>
+
+    <!-- 用户详情对话框 -->
+    <NModal v-model:show="detailVisible" :mask-closable="false" style="width: 600px">
+      <NCard
+        title="用户详情"
+        :bordered="false"
+        size="huge"
+        role="dialog"
+        aria-modal="true"
+      >
+        <template #header-extra>
+          <NButton
+            quaternary
+            circle
+            @click="detailVisible = false"
+            style="margin-right: -8px;"
+          >
+            <template #icon>
+              <div style="font-size: 18px; line-height: 1;">×</div>
+            </template>
+          </NButton>
+        </template>
+        
+        <NSpin :show="detailLoading">
+          <NGrid v-if="detailUser" :x-gap="24" :y-gap="16" responsive="screen" item-responsive>
+            <NGi span="24">
+              <div class="flex items-center gap-4 mb-4">
+                <NAvatar
+                  :src="detailUser.avatar || 'https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg'"
+                  size="large"
+                />
+                <div>
+                  <div class="text-lg font-semibold">{{ detailUser.nickname }}</div>
+                  <div class="text-gray-500">@{{ detailUser.username }}</div>
+                </div>
+              </div>
+            </NGi>
+            
+            <NGi span="12">
+              <NFormItem label="用户ID">
+                <NText>{{ detailUser.id }}</NText>
+              </NFormItem>
+            </NGi>
+            <NGi span="12">
+              <NFormItem label="应用ID">
+                <NText>{{ detailUser.appId || '无' }}</NText>
+              </NFormItem>
+            </NGi>
+            
+            <NGi span="12">
+              <NFormItem label="角色">
+                <NTag 
+                  v-for="role in detailUser.roles" 
+                  :key="role"
+                  :type="role === '1' ? 'warning' : 'default'"
+                >
+                  {{ roleOptions.find(opt => opt.value === role)?.label || role }}
+                </NTag>
+              </NFormItem>
+            </NGi>
+            <NGi span="12">
+              <NFormItem label="会员等级">
+                <NTag :type="detailUser.membership === '3' ? 'success' : 'primary'">
+                  {{ membershipOptions.find(opt => opt.value === detailUser?.membership)?.label || detailUser.membership }}
+                </NTag>
+              </NFormItem>
+            </NGi>
+            
+            <NGi span="12">
+              <NFormItem label="积分">
+                <NText>{{ detailUser.points }}</NText>
+              </NFormItem>
+            </NGi>
+            <NGi span="12">
+              <NFormItem label="状态">
+                <NTag :type="(detailUser.active || 0) == 1 ? 'success' : 'error'">
+                  {{ (detailUser.active || 0) == 1 ? '激活' : '禁用' }}
+                </NTag>
+              </NFormItem>
+            </NGi>
+            
+            <NGi span="12">
+              <NFormItem label="创建时间">
+                <NText>{{ formatDate(detailUser.create_time)}}</NText>
+              </NFormItem>
+            </NGi>
+            <NGi span="12">
+              <NFormItem label="更新时间">
+                <NText>{{ formatDate(detailUser.update_time) }}</NText>
+              </NFormItem>
+            </NGi>
+          </NGrid>
+          
+          <template #footer>
+            <div class="flex justify-end">
+              <NButton @click="detailVisible = false">关闭</NButton>
+            </div>
+          </template>
+        </NSpin>
+      </NCard>
+    </NModal>
+  </div>
+</template>
 <script setup lang="ts">
 import { computed, reactive, ref, onMounted, h } from 'vue';
 import { useAppStore } from '@/store/modules/app';
 import { fetchUserList, fetchUserDetail } from '@/service/api/user';
 import { NAvatar, NButton, NTag, NText, NFormItem, NModal, NCard, NSpin, NGrid, NGi } from 'naive-ui';
+import { formatDate } from '@/utils/date';
 
 const appStore = useAppStore();
 const gap = computed(() => (appStore.isMobile ? 0 : 16));
@@ -29,7 +205,7 @@ const searchParams = reactive({
 
 // 详情对话框
 const detailVisible = ref(false);
-const detailUser = ref<Api.User.UserInfo | null>(null);
+const detailUser = ref<Api.User.UserInfo>();
 const detailLoading = ref(false);
 
 // 选项配置 - 根据实际API数据更新
@@ -155,10 +331,6 @@ const columns = ref([
   }
 ]);
 
-// 格式化日期
-function formatDate(dateString: string) {
-  return new Date(dateString).toLocaleString('zh-CN');
-}
 
 // 获取用户列表
 async function getData() {
@@ -233,180 +405,6 @@ onMounted(() => {
   getData();
 });
 </script>
-
-<template>
-  <div class="p-4">
-    <NCard title="用户管理" :bordered="false">
-      <template #header-extra>
-        <div class="text-gray-500 text-sm">
-          共 {{ data.total }} 个用户
-        </div>
-      </template>
-
-      <!-- 搜索区域 -->
-      <div class="mb-4">
-        <NGrid :x-gap="gap" :y-gap="16" responsive="screen" item-responsive>
-          <NGi span="24 s:12 m:3">
-            <NFormItem label="">
-              <NInput v-model:value="searchParams.username" placeholder="请输入用户名" clearable />
-            </NFormItem>
-          </NGi>
-          <NGi span="24 s:12 m:3">
-            <NFormItem label="">
-              <NInput v-model:value="searchParams.nickname" placeholder="请输入昵称" clearable />
-            </NFormItem>
-          </NGi>
-          <NGi span="24 s:12 m:3">
-            <NFormItem label="">
-              <NSelect 
-                v-model:value="searchParams.active" 
-                :options="activeOptions" 
-                placeholder="请选择状态" 
-                clearable 
-              />
-            </NFormItem>
-          </NGi>
-          <NGi span="24 s:12 m:3">
-            <NFormItem label="">
-              <NSelect 
-                v-model:value="searchParams.membership" 
-                :options="membershipOptions" 
-                placeholder="请选择等级" 
-                clearable 
-              />
-            </NFormItem>
-          </NGi>
-          <NGi span="24 s:12 m:2">
-            <div class="flex items-center h-full gap-2">
-              <NButton @click="handleReset" size="medium">重置</NButton>
-              <NButton type="primary" @click="handleSearch" size="medium">搜索</NButton>
-            </div>
-          </NGi>
-        </NGrid>
-      </div>
-
-      <!-- 表格 -->
-      <NDataTable
-        :loading="loading"
-        :columns="columns"
-        :data="data.list"
-        :pagination="{
-          page: pagination.page,
-          pageSize: pagination.pageSize,
-          pageCount: pagination.pageCount,
-          itemCount: data.total,
-          showSizePicker: true,
-          pageSizes: [10, 20, 50, 100]
-        }"
-        remote
-        @update:page="handlePageChange"
-        @update:page-size="handlePageSizeChange"
-      />
-    </NCard>
-
-    <!-- 用户详情对话框 -->
-    <NModal v-model:show="detailVisible" :mask-closable="false" style="width: 600px">
-      <NCard
-        title="用户详情"
-        :bordered="false"
-        size="huge"
-        role="dialog"
-        aria-modal="true"
-      >
-        <template #header-extra>
-          <NButton
-            quaternary
-            circle
-            @click="detailVisible = false"
-            style="margin-right: -8px;"
-          >
-            <template #icon>
-              <div style="font-size: 18px; line-height: 1;">×</div>
-            </template>
-          </NButton>
-        </template>
-        
-        <NSpin :show="detailLoading">
-          <NGrid v-if="detailUser" :x-gap="24" :y-gap="16" responsive="screen" item-responsive>
-            <NGi span="24">
-              <div class="flex items-center gap-4 mb-4">
-                <NAvatar
-                  :src="detailUser.avatar || 'https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg'"
-                  size="large"
-                />
-                <div>
-                  <div class="text-lg font-semibold">{{ detailUser.nickname }}</div>
-                  <div class="text-gray-500">@{{ detailUser.username }}</div>
-                </div>
-              </div>
-            </NGi>
-            
-            <NGi span="12">
-              <NFormItem label="用户ID">
-                <NText>{{ detailUser.id }}</NText>
-              </NFormItem>
-            </NGi>
-            <NGi span="12">
-              <NFormItem label="应用ID">
-                <NText>{{ detailUser.appId || '无' }}</NText>
-              </NFormItem>
-            </NGi>
-            
-            <NGi span="12">
-              <NFormItem label="角色">
-                <NTag 
-                  v-for="role in detailUser.roles" 
-                  :key="role"
-                  :type="role === '1' ? 'warning' : 'default'"
-                >
-                  {{ roleOptions.find(opt => opt.value === role)?.label || role }}
-                </NTag>
-              </NFormItem>
-            </NGi>
-            <NGi span="12">
-              <NFormItem label="会员等级">
-                <NTag :type="detailUser.membership === '3' ? 'success' : 'primary'">
-                  {{ membershipOptions.find(opt => opt.value === detailUser?.membership)?.label || detailUser.membership }}
-                </NTag>
-              </NFormItem>
-            </NGi>
-            
-            <NGi span="12">
-              <NFormItem label="积分">
-                <NText>{{ detailUser.points }}</NText>
-              </NFormItem>
-            </NGi>
-            <NGi span="12">
-              <NFormItem label="状态">
-                <NTag :type="(detailUser.active || 0) == 1 ? 'success' : 'error'">
-                  {{ (detailUser.active || 0) == 1 ? '激活' : '禁用' }}
-                </NTag>
-              </NFormItem>
-            </NGi>
-            
-            <NGi span="12">
-              <NFormItem label="创建时间">
-                <NText>{{ formatDate(detailUser.create_time) }}</NText>
-              </NFormItem>
-            </NGi>
-            <NGi span="12">
-              <NFormItem label="更新时间">
-                <NText>{{ formatDate(detailUser.update_time) }}</NText>
-              </NFormItem>
-            </NGi>
-          </NGrid>
-          
-          <template #footer>
-            <div class="flex justify-end">
-              <NButton @click="detailVisible = false">关闭</NButton>
-            </div>
-          </template>
-        </NSpin>
-      </NCard>
-    </NModal>
-  </div>
-</template>
-
 <style scoped>
 .card-wrapper {
   min-height: 400px;

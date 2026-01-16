@@ -23,6 +23,7 @@ declare module "@elegant-router/types" {
     "home": "/home";
     "iframe-page": "/iframe-page/:url";
     "login": "/login/:module(pwd-login|code-login|register|reset-pwd|bind-wechat)?";
+    "porint-manage": "/porint-manage";
     "user-manage": "/user-manage";
   };
 
@@ -61,6 +62,7 @@ declare module "@elegant-router/types" {
     | "home"
     | "iframe-page"
     | "login"
+    | "porint-manage"
     | "user-manage"
   >;
 
@@ -84,6 +86,7 @@ declare module "@elegant-router/types" {
     | "iframe-page"
     | "login"
     | "home"
+    | "porint-manage"
     | "user-manage"
   >;
 

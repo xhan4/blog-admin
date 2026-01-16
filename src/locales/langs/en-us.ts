@@ -160,8 +160,7 @@ const local: App.I18n.Schema = {
     500: 'Server Error',
     'iframe-page': 'Iframe',
     home: 'Home',
-    'blog-manage':'BlogManage',
-    'mp-manage':'MpManage',
+    'porint-manage':'PointManage',
     'user-manage':'UserManage',
   },
   page: {

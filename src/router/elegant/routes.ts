@@ -76,6 +76,17 @@ export const generatedRoutes: GeneratedRoute[] = [
     }
   },
   {
+    name: 'porint-manage',
+    path: '/porint-manage',
+    component: 'layout.base$view.porint-manage',
+    meta: {
+      title: 'porint-manage',
+      i18nKey: 'route.porint-manage',
+      icon: 'mdi:star-circle',
+      order: 5
+    }
+  },
+  {
     name: 'user-manage',
     path: '/user-manage',
     component: 'layout.base$view.user-manage',

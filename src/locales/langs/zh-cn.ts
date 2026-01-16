@@ -160,8 +160,7 @@ const local: App.I18n.Schema = {
     500: '服务器错误',
     'iframe-page': '外链页面',
     home: '首页',
-    'blog-manage':"博客管理",
-    'mp-manage':"小程序管理",
+    'porint-manage':'积分管理',
     'user-manage':"用户管理"
   },
   page: {

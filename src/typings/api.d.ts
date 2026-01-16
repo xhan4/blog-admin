@@ -129,4 +129,62 @@ declare namespace Api {
       msg: string;
     }
   }
+  namespace Points {
+    // 积分交易类型枚举
+    type TransactionType = 'register_bonus' | 'video_deduction' | 'video_refund' | 'daily_check' | 'share_bonus' | 'manual_add' | 'manual_deduct';
+    
+    // 积分记录项
+    interface PointsRecord {
+      createdAt(createdAt: any): import("vue").VNodeChild;
+      id: number;
+      userId: number;
+      username: string;
+      points: number; // 变动积分值，正数为增加，负数为减少
+      balance: number; // 变动后的积分余额
+      transactionType: TransactionType;
+      description: string;
+      createTime: string;
+      operatorId?: number; // 操作员ID，如果是管理员操作
+    }
+    
+    // 获取积分历史记录的参数
+    interface PointsHistoryParams {
+      page?: number;
+      limit?: number;
+      username?: string;
+      transactionType?: TransactionType;
+      startDate?: string;
+      endDate?: string;
+    }
+    
+    // 积分历史记录数据
+    interface PointsHistoryData {
+      records: PointsRecord[];
+      total: number;
+      page: number;
+      limit: number;
+    }
+    
+    // 调整用户积分的参数
+    interface AdjustPointsParams {
+      userId: number;
+      points: number; // 正数为增加，负数为减少
+      description: string;
+    }
+    
+    // 调整积分数据
+    interface AdjustPointsData {
+      userId: number;
+      oldBalance: number;
+      newBalance: number;
+      adjustedPoints: number;
+    }
+    
+    // 用户积分数据
+    interface UserPointsData {
+      userId: number;
+      balance: number;
+    }
+  }
 }
+
