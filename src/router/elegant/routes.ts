@@ -96,5 +96,16 @@ export const generatedRoutes: GeneratedRoute[] = [
       icon: 'mdi:account-group',
       order: 4
     }
+  },
+  {
+    name: 'video-manage',
+    path: '/video-manage',
+    component: 'layout.base$view.video-manage',
+    meta: {
+      title: 'video-manage',
+      i18nKey: 'route.video-manage',
+      icon: 'mdi:video',
+      order: 6
+    }
   }
 ];

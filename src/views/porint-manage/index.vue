@@ -54,7 +54,10 @@
         itemCount: total,
         showSizePicker: true,
         pageSizes: [10, 20, 50, 100]
-      }" :min-height="550" remote @update:page="handleChangePage"
+      }"  
+        :min-height="550" 
+        remote 
+        @update:page="handleChangePage"
         @update:page-size="handlePageSizeChange" />
     </NCard>
 

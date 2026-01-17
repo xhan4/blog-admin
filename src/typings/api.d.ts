@@ -186,5 +186,70 @@ declare namespace Api {
       balance: number;
     }
   }
+  namespace Video {
+    /** 视频记录历史参数 */
+    interface VideoHistoryParams {
+      /** 当前页码 */
+      current?: number;
+      /** 每页数量 */
+      size?: number;
+      /** 用户名 */
+      username?: string;
+      /** 状态 */
+      status?: 'success' | 'processing' | 'failed';
+      /** 开始日期 */
+      startDate?: string;
+      /** 结束日期 */
+      endDate?: string;
+    }
+
+    /** 视频记录历史数据 */
+    interface VideoHistoryData {
+      /** 记录列表 */
+      records: VideoRecord[];
+      /** 总数 */
+      total: number;
+      /** 当前页 */
+      current: number;
+      /** 每页数量 */
+      size: number;
+    }
+
+    /** 视频记录 */
+    interface VideoRecord {
+      responseResult: any;
+      requestParams: any;
+      /** 记录ID */
+      id: number;
+      /** 用户ID */
+      userId: number;
+      /** 用户名 */
+      username: string;
+      /** 昵称 */
+      nickname: string;
+      /** 视频标题 */
+      videoTitle: string;
+      /** 视频URL */
+      videoUrl: string;
+      /** 状态 */
+      status: 'success' | 'processing' | 'failed';
+      /** 时长(秒) */
+      duration: number;
+      /** 消耗积分 */
+      pointsCost: number;
+      /** 创建时间 */
+      createdAt: string;
+      /** 更新时间 */
+      updatedAt: string;
+    }
+
+    /** 视频详情数据 */
+    interface VideoDetailData extends VideoRecord {
+      /** 视频描述 */
+      description?: string;
+      /** 视频封面 */
+      thumbnail?: string;
+    }
+  }
 }
 

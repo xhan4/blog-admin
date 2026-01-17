@@ -25,6 +25,7 @@ declare module "@elegant-router/types" {
     "login": "/login/:module(pwd-login|code-login|register|reset-pwd|bind-wechat)?";
     "porint-manage": "/porint-manage";
     "user-manage": "/user-manage";
+    "video-manage": "/video-manage";
   };
 
   /**
@@ -64,6 +65,7 @@ declare module "@elegant-router/types" {
     | "login"
     | "porint-manage"
     | "user-manage"
+    | "video-manage"
   >;
 
   /**
@@ -88,6 +90,7 @@ declare module "@elegant-router/types" {
     | "home"
     | "porint-manage"
     | "user-manage"
+    | "video-manage"
   >;
 
   /**

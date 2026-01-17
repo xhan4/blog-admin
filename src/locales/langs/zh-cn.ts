@@ -161,7 +161,8 @@ const local: App.I18n.Schema = {
     'iframe-page': '外链页面',
     home: '首页',
     'porint-manage':'积分管理',
-    'user-manage':"用户管理"
+    'user-manage':"用户管理",
+    "video-manage":'视频管理'
   },
   page: {
     login: {

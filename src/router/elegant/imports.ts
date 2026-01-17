@@ -23,4 +23,5 @@ export const views: Record<LastLevelRouteKey, RouteComponent | (() => Promise<Ro
   home: () => import("@/views/home/index.vue"),
   "porint-manage": () => import("@/views/porint-manage/index.vue"),
   "user-manage": () => import("@/views/user-manage/index.vue"),
+  "video-manage": () => import("@/views/video-manage/index.vue"),
 };

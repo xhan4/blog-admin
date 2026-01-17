@@ -65,7 +65,7 @@
           pageSizes: [10, 20, 50, 100]
         }"
         remote
-        :min-height="550"
+        :min-height="570"
         @update:page="handlePageChange"
         @update:page-size="handlePageSizeChange"
       />

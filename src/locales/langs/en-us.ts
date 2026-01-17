@@ -162,6 +162,7 @@ const local: App.I18n.Schema = {
     home: 'Home',
     'porint-manage':'PointManage',
     'user-manage':'UserManage',
+    "video-manage":'VideoManage'
   },
   page: {
     login: {
